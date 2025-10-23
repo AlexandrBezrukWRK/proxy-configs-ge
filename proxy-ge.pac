@@ -3,6 +3,8 @@ function FindProxyForURL(url, host) {
         "chatgpt.com",
         "x.com",
         "x.co",
+        "api.x.com",
+        "twitter.com",
         "*.twimg.com",
         "flibusta.is"
     ];
@@ -33,5 +35,6 @@ function FindProxyForURL(url, host) {
     // Direct connection for others
     return "DIRECT";
 }
+
 
 
