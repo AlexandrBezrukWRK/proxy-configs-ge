@@ -2,6 +2,7 @@ function FindProxyForURL(url, host) {
     var proxyList = [
         "chatgpt.com",
         "x.com",
+        "x.co",
         "flibusta.is"
     ];
 
@@ -31,3 +32,4 @@ function FindProxyForURL(url, host) {
     // Direct connection for others
     return "DIRECT";
 }
+
