@@ -1,43 +1,66 @@
 function FindProxyForURL(url, host) {
-    var proxyList = [
-        "chatgpt.com",
+    // --- Proxy settings ---
+    var YOUTUBE_PROXY = "PROXY 85.117.62.78:8080; DIRECT";
+    var TWITTER_PROXY = "PROXY 192.168.1.23:80; DIRECT";
+
+    // --- Domain lists ---
+    var youtubeDomains = [
+        "youtube.com",
+        "m.youtube.com",
+        "youtube-nocookie.com",
+        "youtu.be",
+        "googlevideo.com",
+        "ytimg.com",
+        "ggpht.com",
+        "gstatic.com",
+        "static.doubleclick.net"
+    ];
+
+    var twitterDomains = [
         "x.com",
-        "x.co",
-        "api.x.com",
         "twitter.com",
-        "*.twimg.com",
-        "video.twimg.com",
-        "pbs.twimg.com	",
+        "t.co",
+        "api.t.co",
+        "twimg.com",
+        "ads-twitter.com",
+        "pscp.tv",
+        "twtrdns.net",
+        "twttr.com",
+        "twitterinc.com",
+        "cms-twdigitalassets.com",
+        "api.twitter.com",
+        "upload.twitter.com",
+        "cdn.twitter.com",
+        "abs.twimg.com",
+        "video.twitter.com",
+        "syndication.twitter.com",
+        "analytics.twitter.com",
+        "caps.twitter.com",
+        "chatgpt.com",
         "flibusta.is"
     ];
 
-    // Check if host should go through YouTube proxy
-    if (
-        dnsDomainIs(host, "youtube.com") ||
-        dnsDomainIs(host, "www.youtube.com") ||
-        dnsDomainIs(host, "youtube-nocookie.com") ||
-        shExpMatch(host, "*.googlevideo.com") ||
-        dnsDomainIs(host, "gstatic.com") ||
-        shExpMatch(host, "*.googleapis.com") ||
-        shExpMatch(host, "*.g.doubleclick.net") ||
-        dnsDomainIs(host, "static.doubleclick.net") ||
-        shExpMatch(host, "*.ytimg.com") ||
-        shExpMatch(host, "*.ggpht.com")
-    ) {
-// Use proxy 85.117.62.78:8080 for all YouTube and video domains
-        return "PROXY 85.117.62.78:8080";    }
-
-    // Check if host matches any site in proxyList
-    for (var i = 0; i < proxyList.length; i++) {
-        if (dnsDomainIs(host, proxyList[i])) {
-            return "PROXY 192.168.1.23:80";
+    // --- Universal host match function ---
+    function matchHostList(list, host) {
+        for (var i = 0; i < list.length; i++) {
+            var domain = list[i];
+            if (dnsDomainIs(host, domain) || shExpMatch(host, "*." + domain)) {
+                return true;
+            }
         }
+        return false;
     }
 
-    // Direct connection for others
+    // --- Check YouTube / Google Video ---
+    if (matchHostList(youtubeDomains, host)) {
+        return YOUTUBE_PROXY;
+    }
+
+    // --- Check Twitter / X / ChatGPT / Flibusta ---
+    if (matchHostList(twitterDomains, host)) {
+        return TWITTER_PROXY;
+    }
+
+    // --- Everything else direct ---
     return "DIRECT";
 }
-
-
-
-
